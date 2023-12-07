@@ -85,6 +85,7 @@ struct ChatListView: View {
                     .navigationTitle("Chat")
                     .navigationBarTitleDisplayMode(.inline)
                 }
+                
                 HStack(spacing: 16) {
                     Button {
                         persons.removeAll()

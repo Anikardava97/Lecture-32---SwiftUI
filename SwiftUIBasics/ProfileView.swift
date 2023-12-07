@@ -7,6 +7,11 @@
 
 import SwiftUI
 
+struct ProfileField {
+    var label: String
+    var placeholder: String
+}
+
 struct ProfileView: View {
     
     @State private var name: String = ""
@@ -14,6 +19,24 @@ struct ProfileView: View {
     @State private var password: String = ""
     @State private var dateOfBirth: String = ""
     @State private var country: String = ""
+    
+    private var fields = [
+        ProfileField(label: "Name", placeholder: "test"),
+        ProfileField(label: "Email", placeholder: "test@gmail.com"),
+        ProfileField(label: "Password", placeholder: "************"),
+        ProfileField(label: "Date of Birth", placeholder: "31/02/2000"),
+        ProfileField(label: "Country/Region", placeholder: "Georgia")
+    ]
+    
+    private var textBindings: [Binding<String>] {
+        [
+            $name,
+            $email,
+            $password,
+            $dateOfBirth,
+            $country
+        ]
+    }
     
     var body: some View {
         
@@ -40,61 +63,19 @@ struct ProfileView: View {
                     )
                 
                 VStack(spacing: 40) {
+                    
                     VStack(spacing: 16) {
-                        
-                        VStack(alignment: .leading, spacing: 12) {
-                            Text("Name")
-                                .font(.system(size: 16))
-                                .bold()
-                                .padding(.leading, 24)
-                            
-                            TextField("test", text: $name)
-                                .textFieldStyle(RoundedBorderTextFieldStyle())
-                                .padding(.horizontal, 24)
-                        }
-                        
-                        VStack(alignment: .leading, spacing: 12) {
-                            Text("Email")
-                                .font(.system(size: 16))
-                                .bold()
-                                .padding(.leading, 24)
-                            
-                            TextField("test@gmail.com", text: $email)
-                                .textFieldStyle(RoundedBorderTextFieldStyle())
-                                .padding(.horizontal, 24)
-                        }
-                        
-                        VStack(alignment: .leading, spacing: 12) {
-                            Text("Password")
-                                .font(.system(size: 16))
-                                .bold()
-                                .padding(.leading, 24)
-                            
-                            TextField("************", text: $password)
-                                .textFieldStyle(RoundedBorderTextFieldStyle())
-                                .padding(.horizontal, 24)
-                        }
-                        
-                        VStack(alignment: .leading, spacing: 12) {
-                            Text("Date of Birth")
-                                .font(.system(size: 16))
-                                .bold()
-                                .padding(.leading, 24)
-                            
-                            TextField("31/02/2000", text: $dateOfBirth)
-                                .textFieldStyle(RoundedBorderTextFieldStyle())
-                                .padding(.horizontal, 24)
-                        }
-                        
-                        VStack(alignment: .leading, spacing: 12) {
-                            Text("Country/Region")
-                                .font(.system(size: 16))
-                                .bold()
-                                .padding(.leading, 24)
-                            
-                            TextField("Georgia", text: $country)
-                                .textFieldStyle(RoundedBorderTextFieldStyle())
-                                .padding(.horizontal, 24)
+                        ForEach(fields.indices, id: \.self) { index in
+                            VStack(alignment: .leading, spacing: 12) {
+                                Text(fields[index].label)
+                                    .font(.system(size: 16))
+                                    .bold()
+                                    .padding(.leading, 24)
+                                
+                                TextField(fields[index].placeholder, text: textBindings[index])
+                                    .textFieldStyle(RoundedBorderTextFieldStyle())
+                                    .padding(.horizontal, 24)
+                            }
                         }
                     }
                     
@@ -112,13 +93,13 @@ struct ProfileView: View {
                             )
                     }
                 }
-                
-                Spacer()
             }
             
-            .navigationBarItems(leading: Image(systemName: "chevron.left"))
-            .navigationTitle("Edit Profile")
-            .navigationBarTitleDisplayMode(.inline)
+            Spacer()
+            
+                .navigationBarItems(leading: Image(systemName: "chevron.left"))
+                .navigationTitle("Edit Profile")
+                .navigationBarTitleDisplayMode(.inline)
         }
     }
 }
